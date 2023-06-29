@@ -1,0 +1,34 @@
+{% extends 'f_base.html' %}
+{% load user_filters %}
+
+{% block content %}
+
+<div style = "background-color:blanchedalmond; height:max-content" ><br><br>
+  <table class="table-auto mx-auto w-full mt-8 border-collapse">
+      <thead style="background-color:rgb(34, 34, 74); color:white">
+        <tr  class="uppercase font-semibold text-sm">
+          <th class=" border border-black px-4 py-2">Email</th>
+          <th class=" border border-black px-4 py-2" >Name</th>
+          <th class=" border border-black px-4 py-2" >Status</th>
+
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr style="background-color:gray;color:white;">
+          <td class="border border-blue-900 px-4 py-2">{{user.email}}</td>
+          <td class="border border-blue-900 px-4 py-2">{{user.first_name}}</td>
+          <td>
+            <a href="/follow_user/update_status/?user={{ user.id }}">
+                <button type="button" class="btn btn-warning">Follow</button>
+              </a>
+          </td>
+        </tr> 
+        {% endfor %}
+
+       </tbody>
+  </table>
+</div>
+
+  
+
+{% endblock %}

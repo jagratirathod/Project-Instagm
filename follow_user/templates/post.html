@@ -1,0 +1,28 @@
+{% extends 'f_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div style="background-color: bisque; height:max-content">
+<center>
+
+{% if messages %}
+{% for message in messages %}
+<div>{{ message}}</div>
+{% endfor %}
+{% endif %}
+    
+
+<div style="color:black;">
+    <form action="" method="POST" enctype="multipart/form-data" style="width: 300px; height:1000px;" >
+        {% csrf_token %}
+        <br><br><br>
+        <h6><strong>- Post Here -</strong> </h6> <br>
+        {{form|crispy}}  <br>
+        <button type="submit" class="btn btn-danger">Save</button>
+    </form>
+</div>
+
+</center>
+</div>
+{% endblock %}
