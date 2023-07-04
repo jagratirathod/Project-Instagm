@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,8 +42,19 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'user_app',
-    'follow_user'
+    'follow_user',
+    'chat_app',
+    'channels',
+    'post_app'
+
 ]
+
+# django channels
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',  # Use InMemoryChannelLayer for development
+    },
+}
 
 # Customize user
 AUTH_USER_MODEL = 'user_app.User'
@@ -120,11 +132,10 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR/'static']
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -140,3 +151,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_TEMPLATE_PACK = 'uni_form'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# login 
+login_url = reverse_lazy('user_app:login')

@@ -3,7 +3,6 @@ from user_app.models import User
 
 # Create your models here.
 
-
 class SendRequest(models.Model):
 
     STATUS_TYPE_CHOICES = (
@@ -23,6 +22,11 @@ class SendRequest(models.Model):
         User, on_delete=models.CASCADE, related_name='request_user', null=True)
     receive = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='receive', null=True)
+    
+    def __str__(self):
+        return self.user.email
+
+
 
     def save(self, *args, **kwargs):
         if self.sender:
@@ -31,10 +35,4 @@ class SendRequest(models.Model):
             self.status = SendRequest.STATUS_TYPE_CHOICES[3][0]
         super().save(*args, **kwargs)
 
-
-class Post(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='post', null=True)
-    image = models.ImageField(upload_to='post/image', blank=True)
-    title = models.CharField(max_length=50)
-    created_at = models.DateTimeField(auto_now_add=True)
+   

@@ -19,8 +19,9 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
           <li class="nav-item active">
-            <h5 style="font-style:oblique;"><a class="nav-link active" aria-current="page" href="{% url 'follow_user:all_post' %}">Home</a></h5>
+            <h5 style="font-style:oblique;"><a class="nav-link active" aria-current="page" href="{% url 'post_app:list_post' %}">Home</a></h5>
           </li>
 
           <li class="nav-item">
@@ -31,11 +32,11 @@
             <h5><a class="nav-link" href="{% url 'follow_user:notification' %}">Notification</a></h5>
           </li>
 
-          <!-- <li class="nav-item">
-            <h5><a class="nav-link" href="{% url 'follow_user:post' %}">Post</a></h5>
-          </li> -->
+          <li class="nav-item">
+            <h5><a class="nav-link" href="{% url 'follow_user:profile' %}">Profile</a></h5>
+          </li>
 
-        <li class="nav-item">
+          <li class="nav-item">
             <h5> <a class="nav-link" href="/">Logout</a></h5>
           </li>
 

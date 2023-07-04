@@ -1,32 +1,23 @@
 from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from user_app.models import User
-from . models import SendRequest, Post
+from . models import SendRequest
 from django.db.models import Q
-from django.http import HttpResponse
-from django.views.generic.edit import DeleteView
+from django.views.generic.edit import DeleteView 
 from django.urls import reverse_lazy
-from .forms import PostForm
-from django. contrib import messages
+
+from . models import User 
+from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from project_instagram import settings
+from . forms import UserProfileUpdateForm
+from django.contrib.messages.views import SuccessMessageMixin
+
 
 # Create your views here.
 
-
 def home(request):
     return render(request, "f_base.html")
-
-
-class PostList(ListView):
-    model = Post
-    template_name = "users_post.html"
-    context_object_name = "user_post"
-
-    def get_queryset(self):
-        senders_post = SendRequest.objects.filter(user = self.request.user,status="Following").values_list('sender')
-        users = Post.objects.filter(
-            Q(user=self.request.user) | Q(user__in = senders_post))
-        return users
-
 
 class AllUser(ListView):
     model = User
@@ -85,14 +76,29 @@ class Requestdelete(DeleteView):
     template_name = "request_delete.html"
     success_url = reverse_lazy("follow_user:notification")
 
+    def get_object(self, queryset=None, *args, **kwargs):
+        user_id = self.kwargs['pk']
+        del_request_id = SendRequest.objects.filter(id = user_id).values_list('receive')
+        sender_del = SendRequest.objects.filter(user__in= del_request_id,status= "Requested",sender__email= self.request.user.email)
+        sender_del.delete()
+        return super().get_object(queryset)
+    
+# --------------------------------------------------------------------------------------------
 
-def PostView(request):
-    if request.method == "POST":
-        form = PostForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.instance.user = request.user
-            form = form.save()
-            return messages.success(request, "Successfully created")
-    else:
-        form = PostForm()
-        return render(request, "post.html", {"form": form})
+def profile(request):
+    return render(request, 'profile.html')
+
+
+class ProfileUpdateView(LoginRequiredMixin,SuccessMessageMixin, UpdateView):
+    login_url = settings.login_url
+    form_class = UserProfileUpdateForm
+    model = User
+    template_name = 'profile-update.html'
+    success_url = reverse_lazy("follow_user:profile")
+    success_message = "Successfully Edit Profile..."
+
+
+
+
+
+  

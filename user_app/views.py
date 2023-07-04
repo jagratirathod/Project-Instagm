@@ -6,7 +6,6 @@ from . forms import SignupForm, LoginForm
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login
 
-
 # Create your views here.
 
 
@@ -34,3 +33,5 @@ class LoginView(CreateView):
             login(request, user)
             return redirect("/follow_user/")
         return HttpResponse("You have not signup ! please signup first")
+
+

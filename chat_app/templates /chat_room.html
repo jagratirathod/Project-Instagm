@@ -1,0 +1,41 @@
+<h1>Chat Room: {{chat.name }}</h1>
+
+<div id="messages-container">
+  {% for message in messages %}
+    <div class="message">
+      <span class="sender">{{ message.sender }}</span>
+      <span class="content">{{ message.content }}</span>
+      <span class="timestamp">{{ message.timestamp }}</span>
+    </div>
+  {% empty %}
+    <p>No messages yet.</p>
+  {% endfor %}
+</div>
+
+<form id="message-form" method="POST" action="{% url 'chat_app:send_message' room.id %}">
+  {% csrf_token %}
+  <input type="text" name="message_content" placeholder="Type your message...">
+  <button type="submit">Send</button>
+</form>
+
+
+<script>
+  const chatSocket = new WebSocket(
+      'ws://your-domain/ws/chat/room_name/'
+  );
+  
+  chatSocket.onmessage = function(e) {
+      const message = e.data;
+      // Handle received message
+  };
+  
+  chatSocket.onclose = function(e) {
+      // Handle WebSocket connection closed
+  };
+  
+  // Send a message through the WebSocket
+  function sendMessage(message) {
+      chatSocket.send(message);
+  }
+  </script>
+  
