@@ -1,8 +1,8 @@
 from django import forms
-from follow_user . models import Post
+from user_app. models import User
 
 
-class PostForm(forms.ModelForm):
+class UserProfileUpdateForm(forms.ModelForm):
     class Meta:
-        model = Post
-        fields = ['image', 'title']
+        model=User
+        fields = ("images","email","first_name","last_name")

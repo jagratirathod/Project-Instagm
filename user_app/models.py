@@ -8,6 +8,8 @@ from .manager import UserManager
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True)
+    images=models.ImageField(upload_to='users/profile',null=True,blank=True,default=None)
+
     objects = UserManager()
 
     USERNAME_FIELD = "email"
@@ -15,3 +17,5 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+

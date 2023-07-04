@@ -1,0 +1,41 @@
+{% extends 'f_base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="text-center alert alert-{{ message.tags }} alert-dismissible">
+  {{ message|safe }}
+</div>
+{% endfor %}
+{% endif %}
+
+<center>
+<div class="container-fluid">
+
+  <h1 class="h3 mb-0 text-gray-800">Profile</h1>    <br><br>
+
+  <!-- Main Content Here -->
+  <div class="row">
+    <div>
+      {% if user.images %}
+      <img src="{{user.images.url}}" class="rounded float-right" height="300px" width="300px">
+      {% else %}
+      <img src="{% static 'images/avtar.png' %}" class="rounded float-right" height="300px" width="300px">
+      {% endif %}
+    </div>
+    <div>
+      <div class="card-body">
+        <p><strong>Email: </strong> {{user.email}} </p>
+        <p><strong>First Name : </strong> {{user.first_name}} </p>
+        <p><strong>Last Name : </strong> {{user.last_name}} </p>
+
+        <a href="{% url 'follow_user:profile-update' request.user.id %}" class="btn btn-sm btn-primary shadow-sm">Update
+          Profile</a>
+      </div>
+    </div>
+  </div>
+</div>
+</center>
+{% endblock %}

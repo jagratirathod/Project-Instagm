@@ -1,0 +1,43 @@
+{% extends 'f_base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div>
+<center>
+
+<div style="background-color: bisque;">
+{% if messages %}
+{% for message in messages %}
+<div>{{ message}}</div>
+{% endfor %}
+{% endif %}
+    
+<div style="color:black;">
+    <form action="" method="POST" enctype="multipart/form-data" style="width: 300px;">
+        {% csrf_token %}
+        <br><br>
+        <h6><strong>Comment Here</strong> </h6> <br>
+        {{form|crispy}}  <br>
+        <button type="submit" class="btn btn-danger">Save</button> <br>
+    </form>
+</div>
+</div>  
+
+<br><br>
+
+<div>
+    {% for comment in post_message %}
+    {% if request.user == comment.user %}
+    <h6>{{request.user.first_name}} {{request.user.last_name}}</h6>
+    {% else %}
+    <h6>{{ comment.user }}</h6>
+    {% endif %}
+
+    <div style="color:black;">{{ comment.message }}</div>
+    {% endfor %}
+</div>
+</center>
+</div>
+    
+{% endblock %}
