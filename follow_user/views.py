@@ -1,18 +1,15 @@
-from django.shortcuts import render, redirect
-from django.views.generic.list import ListView
-from user_app.models import User
-from . models import SendRequest
-from django.db.models import Q
-from django.views.generic.edit import DeleteView 
-from django.urls import reverse_lazy
-
-from . models import User 
-from django.views.generic.edit import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from project_instagram import settings
-from . forms import UserProfileUpdateForm
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.views.generic.edit import DeleteView, UpdateView
+from django.views.generic.list import ListView
+from project_instagram import settings
+from user_app.models import User
 
+from .forms import UserProfileUpdateForm
+from .models import SendRequest, User
 
 # Create your views here.
 
@@ -58,12 +55,12 @@ def update_status(request):
 
 
 def start_following(request):
-    user_email = request.GET.get("user")
+    user_id = request.GET.get("user")
     sender = request.GET.get("sender")
-    opposite_user_id = SendRequest.objects.filter(
-        user__email=user_email).values_list('id', flat=True).last()
+
     # Update the status of the opposite user to "Following"
-    update_opposite_user = SendRequest.objects.filter(id=opposite_user_id).update(
+    receive_email= SendRequest.objects.filter(id= user_id).values_list('receive__email',flat=True)
+    update_opposite_user = SendRequest.objects.filter(user__email__in = receive_email , status = "Requested" , sender = request.user).update(
         status=SendRequest.STATUS_TYPE_CHOICES[1][0])
     # Update the status of the current user to "Accept"
     update_current_user = SendRequest.objects.filter(id=sender).update(

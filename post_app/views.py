@@ -1,14 +1,13 @@
-from django.shortcuts import render ,redirect
-from django.http import HttpResponse
-from django.views.generic.list import ListView
-from follow_user. models import SendRequest
-from . models import  Post ,LikePost ,CommentPost
-
 from django.db.models import Q
-from django.views.generic.edit import DeleteView ,CreateView
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from . forms import PostForm , CreateCommentForm
+from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.list import ListView
+from follow_user.models import SendRequest
 
+from .forms import CreateCommentForm, PostForm
+from .models import CommentPost, LikePost, Post
 
 # Create your views here.
 
