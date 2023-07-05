@@ -1,5 +1,7 @@
 {% extends 'f_base.html' %}
 {% load static %}
+{% load user_filters %}
+
 
 {% block content %}
 
@@ -10,6 +12,9 @@
 </div>
 {% endfor %}
 {% endif %}
+
+
+<h5>Followers: {{ request|get_no_of_follower }} &nbsp;&nbsp;&nbsp; Following: {{ request|get_no_of_following }}</h5>
 
 <center>
 <div class="container-fluid">
