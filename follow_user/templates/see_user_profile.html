@@ -13,9 +13,7 @@
 {% endfor %}
 {% endif %}
 
-
-
-<h5>Posts : {{user.id|get_no_post}}  &nbsp;&nbsp;&nbsp; Followers: {{ user.id|get_no_of_follower }} &nbsp;&nbsp;&nbsp; Following: {{ user.id|get_no_of_following }}</h5>
+<h5>Posts : {{profile.id|get_no_post}}  &nbsp;&nbsp;&nbsp; Followers: {{ profile.id|get_no_of_follower }} &nbsp;&nbsp;&nbsp; Following: {{ profile.id|get_no_of_following }}</h5>
 
 <center>
 <div class="container-fluid">
@@ -25,20 +23,18 @@
   <!-- Main Content Here -->
   <div class="row">
     <div>
-      {% if user.images %}
-      <img src="{{user.images.url}}" class="rounded float-right" height="300px" width="300px">
+      {% if profile.images %}
+      <img src="{{profile.images.url}}" class="rounded float-right" height="300px" width="300px">
       {% else %}
       <img src="{% static 'images/avtar.png' %}" class="rounded float-right" height="300px" width="300px">
       {% endif %}
     </div>
+
     <div>
       <div class="card-body">
-        <p><strong>Email: </strong> {{user.email}} </p>
-        <p><strong>First Name : </strong> {{user.first_name}} </p>
-        <p><strong>Last Name : </strong> {{user.last_name}} </p>
-
-        <a href="{% url 'follow_user:profile-update' request.user.id %}" class="btn btn-sm btn-primary shadow-sm">Update
-          Profile</a>
+        <p><strong>Email: </strong> {{profile.email}} </p>
+        <p><strong>First Name : </strong> {{profile.first_name}} </p>
+        <p><strong>Last Name : </strong> {{profile.last_name}} </p>
       </div>
     </div>
   </div>
