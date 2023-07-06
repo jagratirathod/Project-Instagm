@@ -16,8 +16,8 @@
       <tbody>
 
         {% for user in users %}
-
         <tr style="background-color:gray;color:white;">
+          
           {% if user.images %}
           <td>
             <img class="card-img-top" src="{{user.images.url}}" style="width:100px; height: 150px;"alt="Card image cap">
@@ -26,21 +26,18 @@
           <td class="border border-blue-900 px-4 py-2"></td>
           {% endif %}
 
-          <td class="border border-blue-900 px-4 py-2">{{user.email}}</td>
+          <td class="border border-blue-900 px-4 py-2">
+            <a href="/follow_user/see_user_profile/?user={{user.id}}">{{ user.email }}</a>
+          </td>
+
           <td class="border border-blue-900 px-4 py-2">{{user.first_name}}</td>
           <td>
-            <a href="/follow_user/update_status/?user={{ user.id }}">
-                <button type="button" class="btn btn-warning">Follow</button>
-              </a>
-          </td>
-         
-        </tr> 
+            <a href="/follow_user/update_status/?user={{ user.id }}"><button type="button" class="btn btn-warning">Follow</button></a>
+          </td> 
+        </tr> 	
         {% endfor %}
 
        </tbody>
   </table>
 </div>
-
-  
-
 {% endblock %}
