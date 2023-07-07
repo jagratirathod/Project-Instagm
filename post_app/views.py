@@ -1,4 +1,6 @@
+from typing import Any
 from django.db.models import Q
+from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -8,6 +10,8 @@ from follow_user.models import SendRequest
 from django.views import View
 from .forms import CreateCommentForm, PostForm
 from .models import CommentPost, LikePost, Post
+from django.utils.timezone import make_aware
+from datetime import datetime
 
 # Create your views here.
 
@@ -21,12 +25,22 @@ class ListPostView(ListView):
     context_object_name = "user_post"
 
     def get_queryset(self):
-        senders_post = SendRequest.objects.filter(user = self.request.user,status="Following").values_list('sender')
-        users = Post.objects.filter(
-            Q(user=self.request.user) | Q(user__in = senders_post))
-        return users
+        start_date = self.request.POST.get("start_date")
+        end_date = self.request.POST.get("end_date")
+        if start_date and end_date:
+            start_date = make_aware(datetime.strptime(start_date, "%Y-%m-%d"))
+            end_date = make_aware(datetime.strptime(end_date, "%Y-%m-%d"))
+            post = Post.objects.filter(user=self.request.user, created_at__range=[start_date, end_date])
+            return post
+        else:
+            senders_post = SendRequest.objects.filter(user=self.request.user, status="Following").values_list('sender')
+            users = Post.objects.filter(Q(user=self.request.user) | Q(user__in=senders_post))
+            return users
+        
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
 
-def CreatePostView(request):
+def createpostview(request):
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -83,8 +97,12 @@ class CreateCommentView(CreateView):
         context['post_message'] = CommentPost.objects.filter(post = post_id)
         return context
 
-
-class Postdelete(DeleteView):
+class PostDelete(DeleteView):
     model = Post
     template_name = "post_delete.html"
     success_url = reverse_lazy("post_app:list_post")
+
+
+
+
+
