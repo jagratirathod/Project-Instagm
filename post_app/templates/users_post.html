@@ -7,11 +7,24 @@
 <div>{{ message}}</div>
 {% endif %}
     
+ 
+<a href="{% url 'post_app:create_post' %}" class="btn btn-secondary">Add Post</a> <br><br>
 
-<a href="{% url 'post_app:create_post' %}" class="btn btn-secondary">Add Post</a>
+<center>
+  <form method="POST" action="">
+    {% csrf_token %}
+    <div>
+      <label>Start date</label>
+      <input type="text" name="start_date" placeholder="Enter start date">
+      <label>End date</label>
+      <input type="text" name="end_date" placeholder="Enter end date">
+      <input type="submit" value="Filter">
+    </div>
+  </form>
+</center>  <br><br>
 
 <h1 class="font-mono font-bold text-3xl text-center pb-5 pt-2">All Post</h1>  <hr/>
-<div style = "background-color:blanchedalmond; height:max-content" ><br><br>
+<div style = "background-color:blanchedalmond; height:max-content"><br><br>
 
   <table class="table-auto mx-auto w-full mt-8 border-collapse">
       <thead style="background-color:rgb(34, 34, 74); color:white">
