@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic.list import ListView
 from follow_user.models import SendRequest
-
+from django.views import View
 from .forms import CreateCommentForm, PostForm
 from .models import CommentPost, LikePost, Post
 
@@ -14,7 +14,6 @@ from .models import CommentPost, LikePost, Post
 
 def home(request):
     return HttpResponse("post testing")
-
 
 class ListPostView(ListView):
     model = Post
@@ -41,15 +40,27 @@ def CreatePostView(request):
         return render(request, "post.html", {"form": form})
 
 
-def LikePostView(request): 
-    id = request.GET.get("post_id")
-    post_id = Post.objects.get(id=id)
-    if post_id:
-        like_post = LikePost.objects.filter(user=request.user, post = post_id).last()
-        if not like_post:
-            like = LikePost.objects.create(user=request.user, post = post_id,number_of_likes = 1)
-            return redirect("post_app:list_post")
-        return HttpResponse("Already liked this Post")
+# def LikePostView(request): 
+#     id = request.GET.get("post_id")
+#     post_id = Post.objects.get(id=id)
+#     if post_id:
+#         like_post = LikePost.objects.filter(user=request.user, post = post_id).last()
+#         if not like_post:
+#             like = LikePost.objects.create(user=request.user, post = post_id,number_of_likes = 1)
+#             return redirect("post_app:list_post")
+#         return HttpResponse("Already liked this Post")
+
+class LikePostView(View):
+    def get(self, request):
+        post_id = request.GET.get("post_id")
+        post = Post.objects.get(id=post_id)
+        if post:
+            like_post = LikePost.objects.filter(user=request.user, post=post).last()
+            if not like_post:
+                like = LikePost.objects.create(user=request.user, post=post, number_of_likes=1)
+                return redirect("post_app:list_post")
+            return HttpResponse("Already liked")
+
 
 
 class CreateCommentView(CreateView):

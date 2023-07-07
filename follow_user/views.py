@@ -111,19 +111,19 @@ class SeeUserProfileView(ListView):
   
 def changepassword(request):
     if request.method == "POST":
-        email =  request.POST.get("email")
+        email = request.POST.get("email")
         password = request.POST.get("password")
         new_password = request.POST.get("new_password")
-        user = User.objects.get(email = email)
-        if user:
-            if check_password(password, user.password):          
+        try:
+            user = User.objects.get(email=email)
+            if check_password(password, user.password):
                 user.set_password(new_password)
                 user.save()
-                return HttpResponse("Successfully change password")
-            return HttpResponse("Password is not correct")
-
-        return HttpResponse("User does not exists")
+                return render(request, "changepasswords.html", {"message": "Successfully Changed Password"})
+            else:
+                return render(request, "changepasswords.html", {"message": "Incorrect Password"})
+        except User.DoesNotExist:
+            return render(request, "changepasswords.html", {"message": "User Does Not Exist"})
     else:
-        return render(request,"changepasswords.html",{"message":"Successfully change password"})
-
+        return render(request, "changepasswords.html")
 
