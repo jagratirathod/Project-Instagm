@@ -3,6 +3,11 @@
 
 
 {% block content %}
+{% if message %}
+<div>{{ message}}</div>
+{% endif %}
+    
+
 <a href="{% url 'post_app:create_post' %}" class="btn btn-secondary">Add Post</a>
 
 <h1 class="font-mono font-bold text-3xl text-center pb-5 pt-2">All Post</h1>  <hr/>
@@ -12,10 +17,10 @@
       <thead style="background-color:rgb(34, 34, 74); color:white">
         <tr  class="uppercase font-semibold text-sm">
           <th class=" border border-black px-4 py-2">Title</th>
-          <th class=" border border-black px-4 py-2" >Image</th>
-          <th class=" border border-black px-4 py-2" ></th>
-          <th class=" border border-black px-4 py-2" ></th>
-          <th class=" border border-black px-4 py-2" ></th>
+          <th class=" border border-black px-4 py-2">Image</th>
+          <th class=" border border-black px-4 py-2"></th>
+          <th class=" border border-black px-4 py-2"></th>
+          <th class=" border border-black px-4 py-2"></th>
         </tr>
       </thead>
 
