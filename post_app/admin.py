@@ -10,8 +10,9 @@ admin.site.register(Post, PostAdmin)
 
 
 class LikePostAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user','post', 'number_of_likes']
+    list_display = ['id','post', 'number_of_likes', 'like_by']
 admin.site.register(LikePost, LikePostAdmin)
+
 
 class CommentPostAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'post','message']
