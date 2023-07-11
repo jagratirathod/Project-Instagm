@@ -29,14 +29,15 @@ def send_notification(sender,instance,created,**kwargs):
     
 
 class LikePost(models.Model):
-    user = models.ForeignKey(
+    like_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='users', null=True)
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='like', null=True)
     number_of_likes = models.IntegerField(default=0)
+    created_at = models.DateTimeField(default=timezone.now)
+
     
    
-
 class CommentPost(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='comment', null=True)

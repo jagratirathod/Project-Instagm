@@ -12,6 +12,8 @@ from .forms import CreateCommentForm, PostForm
 from .models import CommentPost, LikePost, Post
 from django.utils.timezone import make_aware
 from datetime import datetime
+from django.db.models import F
+from user_app.models import User
 
 # Create your views here.
 
@@ -54,29 +56,26 @@ def createpostview(request):
         return render(request, "post.html", {"form": form})
 
 
-# def LikePostView(request): 
-#     id = request.GET.get("post_id")
-#     post_id = Post.objects.get(id=id)
-#     if post_id:
-#         like_post = LikePost.objects.filter(user=request.user, post = post_id).last()
-#         if not like_post:
-#             like = LikePost.objects.create(user=request.user, post = post_id,number_of_likes = 1)
-#             return redirect("post_app:list_post")
-#         return HttpResponse("Already liked this Post")
-
 class LikePostView(View):
     def get(self, request):
         post_id = request.GET.get("post_id")
         post = Post.objects.get(id=post_id)
-        if post:
-            like_post = LikePost.objects.filter(user=request.user, post=post).last()
-            if not like_post:
-                like = LikePost.objects.create(user=request.user, post=post, number_of_likes=1)
-                return redirect("post_app:list_post")
-            return HttpResponse("Already liked")
 
+        post_user = Post.objects.filter(id=post_id).values_list('user')
+        main_user = User.objects.filter(id__in = post_user).last()
+        
+        like = LikePost.objects.filter(post = post , like_by = request.user)
+        if not like:
+            LikePost.objects.create(post = post , like_by = request.user,number_of_likes = 1)
 
-
+            if LikePost.objects.filter(post = post , like_by = main_user):
+                LikePost.objects.filter(post = post , like_by = main_user).update(number_of_likes=F('number_of_likes') + 1)
+            else:
+                LikePost.objects.create(post = post , like_by = main_user , number_of_likes = 1)
+            return redirect("post_app:list_post")
+        return HttpResponse("Already liked")
+    
+    
 class CreateCommentView(CreateView):
     form_class = CreateCommentForm
     template_name = "comment.html"
@@ -103,6 +102,16 @@ class PostDelete(DeleteView):
     success_url = reverse_lazy("post_app:list_post")
 
 
+class PostSortView(View):
+    def get(self,request):
+        sort = request.GET.get('sort')
+        like_post =  Post.objects.filter(user=request.user)
+        if sort == "LTH":
+            user_post = like_post.order_by('like__number_of_likes')
+        else:
+            user_post = like_post.order_by('-like__number_of_likes')
+        return render(request, 'users_post.html', {'user_post': user_post})
+    
 
 
 
