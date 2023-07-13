@@ -13,6 +13,7 @@ from django.http import HttpResponse
 from django.contrib.auth.hashers import check_password
 from .forms import UserProfileUpdateForm
 from .models import SendRequest, User
+from django.db.models import F
 
 # Create your views here.
 
@@ -32,20 +33,18 @@ class AllUser(ListView):
             user=self.request.user).values_list('sender__email', flat=True)
 
         if followed_users:
-            users = users.filter(
-                ~Q(send__user__email__in=followed_users))
+            users = users.filter(~Q(send__user__email__in=followed_users))
             return users
         return users
 
 
 class Notification(ListView):
-    model = User
+    model = SendRequest
     context_object_name = "users"
     template_name = "notifications.html"
 
     def get_queryset(self):
-        users = SendRequest.objects.filter(
-            user=self.request.user)
+        users = SendRequest.objects.filter(user=self.request.user)
         return users
 
 

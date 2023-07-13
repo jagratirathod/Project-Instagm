@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'follow_user',
     'chat_app',
     'channels',
-    'post_app'
+    'post_app',
+    # 'chatting_app'
 
 ]
 

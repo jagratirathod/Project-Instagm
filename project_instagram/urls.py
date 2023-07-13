@@ -27,4 +27,6 @@ urlpatterns = [
     path('follow_user/', include('follow_user.urls')),
     path('chat_app/', include('chat_app.urls')),
     path('post_app/', include('post_app.urls')),
+    path('chatting_app/', include('chatting_app.urls')),
+
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

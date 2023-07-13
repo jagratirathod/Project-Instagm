@@ -1,5 +1,7 @@
 {% extends 'f_base.html' %}
 {% load user_filters %}
+{% load static %}
+
 
 {% block content %}
 
@@ -16,23 +18,23 @@
       <tbody>
 
         {% for user in users %}
-        <tr style="background-color:gray;color:white;">
-          
+        <tr style="background-color:rgb(191, 203, 208);color:blue;">
+        <td>
           {% if user.images %}
-          <td>
-            <img class="card-img-top" src="{{user.images.url}}" style="width:100px; height: 150px;"alt="Card image cap">
-          </td>
+            <img class="card-img-top" src="{{user.images.url}}" style="width:100px; height: 100px;"alt="Card image cap">
           {% else %}
-          <td class="border border-blue-900 px-4 py-2"></td>
+          <img src="{% static 'images/profile88.png' %}" class="rounded float-right" height="100px" width="100px">
           {% endif %}
+        </td>
+
 
           <td class="border border-blue-900 px-4 py-2">
             <a href="/follow_user/see_user_profile/?user={{user.id}}">{{ user.email }}</a>
           </td>
 
           <td class="border border-blue-900 px-4 py-2">{{user.first_name}}</td>
-          <td>
-            <a href="/follow_user/update_status/?user={{ user.id }}"><button type="button" class="btn btn-warning">Follow</button></a>
+          <td style="text-align: center;">
+            <a href="/follow_user/update_status/?user={{ user.id }}"><button type="button" class="btn btn-primary" >Follow</button></a>
           </td> 
         </tr> 	
         {% endfor %}

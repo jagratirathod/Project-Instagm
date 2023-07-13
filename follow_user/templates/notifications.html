@@ -1,21 +1,33 @@
 {% extends 'f_base.html' %}
 {% block content %}
+{% load static %}
 
 <div style="background-color: blanchedalmond; height: max-content"><br><br>
 
     <table class="table-auto mx-auto w-full mt-8 border-collapse">
       <thead style="background-color: rgb(34, 34, 74); color: white">
         <tr class="uppercase font-semibold text-sm">
+          <th class="border border-black px-4 py-2">Image</th>
           <th class="border border-black px-4 py-2">Email</th>
           <th class="border border-black px-4 py-2">Status</th>
       </thead>
 
       <tbody>
-
-        {% for user in users %}
-        
+      {% for user in users %}
         {% if user.status != "Accept" %}
         <tr style="background-color: gray; color: white;">
+          <td>
+            {% if user.sender and user.sender.images %}
+            <img  class="card-img-top" src="{{ user.sender.images.url }}"  style="width:100px; height: 100px;"alt="Card image cap">
+            
+            {% elif user.receive and user.receive.images %}
+            <img  class="card-img-top" src="{{ user.receive.images.url }}"  style="width:100px; height: 100px;"alt="Card image cap">
+
+            {% else %}
+            <img src="{% static 'images/profile95.png' %}" class="rounded float-right" height="100px" width="100px">
+            {% endif %}
+          </td>
+
           {% if user.sender %}
           <td class="border border-blue-900 px-4 py-2">{{ user.sender }}</td>
           {% elif user.receive %}
@@ -23,12 +35,12 @@
           {% endif %}
           
           {% if user.status == "Confirm" %}
-          <td>
+          <td style="text-align: center;">
           <a href="/follow_user/following/?user={{ user.id }}&sender={{user.id}}"><button type="button" class="btn btn-warning">{{ user.status }}</button></a>
-         <a href="{% url 'follow_user:delete_request' user.id %}"><button type="button" class="btn btn-warning">Delete</button></a>
+          <a href="{% url 'follow_user:delete_request' user.id %}"><button type="button" class="btn btn-warning">Delete</button></a>
           </td>
           {% else %}
-          <td><button type="button" class="btn btn-warning">{{ user.status }}</button></td>
+          <td style="text-align: center;"><button type="button" class="btn btn-warning">{{ user.status }}</button></td>
           {% endif %}
         </tr> 
         {% endif %}
