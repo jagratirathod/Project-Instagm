@@ -28,5 +28,7 @@ urlpatterns = [
     path('chat_app/', include('chat_app.urls')),
     path('post_app/', include('post_app.urls')),
     path('chatting_app/', include('chatting_app.urls')),
-
+    path('api/', include('follow_user.follow_user_api.urls')),
+    path('api_post/', include('post_app.post_api.urls')),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+

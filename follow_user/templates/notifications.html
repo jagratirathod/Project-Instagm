@@ -36,7 +36,7 @@
           
           {% if user.status == "Confirm" %}
           <td style="text-align: center;">
-          <a href="/follow_user/following/?user={{ user.id }}&sender={{user.id}}"><button type="button" class="btn btn-warning">{{ user.status }}</button></a>
+          <a href="/follow_user/following/?receive={{ user.id }}"><button type="button" class="btn btn-warning">{{ user.status }}</button></a>
           <a href="{% url 'follow_user:delete_request' user.id %}"><button type="button" class="btn btn-warning">Delete</button></a>
           </td>
           {% else %}

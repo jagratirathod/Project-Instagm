@@ -40,8 +40,8 @@ class ListPostView(ListView):
             users = Post.objects.filter(Q(user=self.request.user) | Q(user__in=senders_post))
             return users
         
-    def post(self, request, *args, **kwargs):
-        return self.get(request, *args, **kwargs)
+    # def post(self, request, *args, **kwargs):
+    #     return self.get(request, *args, **kwargs)
 
 def createpostview(request):
     if request.method == "POST":

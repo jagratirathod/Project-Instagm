@@ -12,8 +12,8 @@ from user_app.models import User
 from django.http import HttpResponse
 from django.contrib.auth.hashers import check_password
 from .forms import UserProfileUpdateForm
-from .models import SendRequest, User
-from django.db.models import F
+from follow_user .models import SendRequest
+
 
 # Create your views here.
 
@@ -57,16 +57,15 @@ def update_status(request):
 
 
 def start_following(request):
-    user_id = request.GET.get("user")
-    sender = request.GET.get("sender")
+    receive_id = request.GET.get("receive")
 
     # Update the status of the opposite user to "Following"
-    receive_email= SendRequest.objects.filter(id= user_id).values_list('receive__email',flat=True)
+    receive_email= SendRequest.objects.filter(id= receive_id).values_list('receive__email',flat=True)
     update_opposite_user = SendRequest.objects.filter(user__email__in = receive_email , status = "Requested" , sender = request.user).update(
         status=SendRequest.STATUS_TYPE_CHOICES[1][0])
     
         # Update the status of the current user to "Accept"
-    update_current_user = SendRequest.objects.filter(id=sender).update(status=SendRequest.STATUS_TYPE_CHOICES[5][0])
+    update_current_user = SendRequest.objects.filter(id=receive_id).update(status=SendRequest.STATUS_TYPE_CHOICES[5][0])
     return redirect("follow_user:user")
 
 
@@ -75,12 +74,13 @@ class Requestdelete(DeleteView):
     template_name = "request_delete.html"
     success_url = reverse_lazy("follow_user:notification")
 
-    def get_object(self, queryset=None, *args, **kwargs):
+    def get_object(self):
         user_id = self.kwargs['pk']
-        del_request_id = SendRequest.objects.filter(id = user_id).values_list('receive')
-        sender_del = SendRequest.objects.filter(user__in= del_request_id,status= "Requested",sender__email= self.request.user.email)
+        del_request_id = SendRequest.objects.filter(id=user_id).values_list('receive')
+        sender_del = SendRequest.objects.filter(user__in=del_request_id, status="Requested", sender__email=self.request.user.email)
         sender_del.delete()
-        return super().get_object(queryset)
+        return super().get_object()
+
 
 # --------------------------------------------------------------------------------------------
 
