@@ -11,5 +11,4 @@ urlpatterns = [
     path('delete_post/<int:pk>/', views.PostDelete.as_view(), name='delete_post'),
     path('like_post/', views.LikePostView.as_view(), name='like_post'),
     path('sort_like/', views.PostSortView.as_view(), name='sort_like'),
-
 ]

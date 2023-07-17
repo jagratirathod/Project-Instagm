@@ -45,9 +45,14 @@ INSTALLED_APPS = [
     'follow_user',
     'chat_app',
     'channels',
-    'post_app'
-
+    'post_app',
+    'follow_user.follow_user_api',
+    'post_app.post_api',
+    'rest_framework',
+    'rest_framework.authtoken',
+    # 'chatting_app'
 ]
+
 
 # django channels
 CHANNEL_LAYERS = {
@@ -163,3 +168,12 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'jarathod@bestpeers.com'
 EMAIL_HOST_PASSWORD = 'wnwvlcekyzyqsqgr'
+
+
+
+# TokenAuthentication
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}

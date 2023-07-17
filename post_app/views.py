@@ -14,9 +14,10 @@ from django.utils.timezone import make_aware
 from datetime import datetime
 from django.db.models import F
 from user_app.models import User
+from django.db.models import Sum
+
 
 # Create your views here.
-
 
 def home(request):
     return HttpResponse("post testing")
@@ -27,8 +28,8 @@ class ListPostView(ListView):
     context_object_name = "user_post"
 
     def get_queryset(self):
-        start_date = self.request.POST.get("start_date")
-        end_date = self.request.POST.get("end_date")
+        start_date = self.request.GET.get("start_date")
+        end_date = self.request.GET.get("end_date")
         if start_date and end_date:
             start_date = make_aware(datetime.strptime(start_date, "%Y-%m-%d"))
             end_date = make_aware(datetime.strptime(end_date, "%Y-%m-%d"))
@@ -39,8 +40,8 @@ class ListPostView(ListView):
             users = Post.objects.filter(Q(user=self.request.user) | Q(user__in=senders_post))
             return users
         
-    def post(self, request, *args, **kwargs):
-        return self.get(request, *args, **kwargs)
+    # def post(self, request, *args, **kwargs):
+    #     return self.get(request, *args, **kwargs)
 
 def createpostview(request):
     if request.method == "POST":
@@ -60,22 +61,13 @@ class LikePostView(View):
     def get(self, request):
         post_id = request.GET.get("post_id")
         post = Post.objects.get(id=post_id)
-
-        post_user = Post.objects.filter(id=post_id).values_list('user')
-        main_user = User.objects.filter(id__in = post_user).last()
-        
         like = LikePost.objects.filter(post = post , like_by = request.user)
         if not like:
             LikePost.objects.create(post = post , like_by = request.user,number_of_likes = 1)
-
-            if LikePost.objects.filter(post = post , like_by = main_user):
-                LikePost.objects.filter(post = post , like_by = main_user).update(number_of_likes=F('number_of_likes') + 1)
-            else:
-                LikePost.objects.create(post = post , like_by = main_user , number_of_likes = 1)
             return redirect("post_app:list_post")
         return HttpResponse("Already liked")
     
-    
+
 class CreateCommentView(CreateView):
     form_class = CreateCommentForm
     template_name = "comment.html"
@@ -112,6 +104,13 @@ class PostSortView(View):
             user_post = like_post.order_by('-like__number_of_likes')
         return render(request, 'users_post.html', {'user_post': user_post})
     
+
+
+        
+
+
+
+
 
 
 

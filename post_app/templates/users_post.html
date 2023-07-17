@@ -11,8 +11,7 @@
 <a href="{% url 'post_app:create_post' %}" class="btn btn-secondary">Add Post</a> <br><br>
 
 <center>
-  <form method="POST" action="">
-    {% csrf_token %}
+  <form method="GET" action="{% url 'post_app:list_post' %}">
     <div>
       <label>Start Date</label>
       <input type="text" name="start_date" placeholder="Enter start date">
