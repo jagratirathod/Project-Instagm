@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-%mx9wdsz1#lu5p-eik#$fl1*0k3%q7chevln=g0_6iqw!p#s3$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -99,12 +99,25 @@ WSGI_APPLICATION = 'project_instagram.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'instagram_db_fk6x',
+        'USER': 'instagram_usr',
+        'PASSWORD': 'yPt3hkBgRJv3bCaDvNQTyf34dtI2IYWe',
+        'HOST': 'dpg-d1r4dqur433s739rl5mg-a.oregon-postgres.render.com',
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation
@@ -177,3 +190,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+
+# configure static -
+# STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
