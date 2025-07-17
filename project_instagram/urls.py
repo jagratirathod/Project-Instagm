@@ -22,6 +22,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     # re_path(r'^', include(routing)),
+    path('', include('django_prometheus.urls')),
+
     path('admin/', admin.site.urls),
     path('', include('user_app.urls')),
     path('follow_user/', include('follow_user.urls')),
